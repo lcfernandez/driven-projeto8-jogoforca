@@ -1,0 +1,65 @@
+button {
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+img {
+    width: 300px;
+}
+
+input {
+    border-radius: 5px;
+    height: 30px;
+    margin: 0 10px;
+    width: 320px;
+}
+
+.display {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.guess {
+    margin: 30px auto;
+    width: 550px;
+}
+
+.guess button {
+    background-color: #e1ecf4;
+    border: #39739d solid 1px;
+    border-radius: 5px;
+    color: #39739d;
+    font-size: 14px;
+    height: 40px;
+    width: 70px;
+}
+
+.letters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 15px auto;
+    width: 615px;
+}
+
+.letters button {
+    background-color: #9faab5;
+    border: none;
+    border-radius: 2px;
+    color: #61676f;
+    height: 40px;
+    margin: 3px;
+    width: 40px;
+}
+
+.pickWord {
+    background-color: #27ae60;
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    height: 45px;
+    margin: 20px 0;
+    width: 160px;
+}
