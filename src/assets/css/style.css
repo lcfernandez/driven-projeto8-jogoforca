@@ -1,3 +1,5 @@
+/* tags */
+
 button {
     cursor: pointer;
     font-size: 16px;
@@ -15,6 +17,10 @@ input {
     width: 320px;
 }
 
+
+
+/* classes */
+
 .c-button-disabled {
     background-color: #9faab5;
     border: none;
@@ -27,7 +33,7 @@ input {
     color: #39739d;
 }
 
-.display {
+.container {
     display: flex;
     justify-content: space-between;
     padding: 20px;
@@ -71,4 +77,10 @@ input {
     height: 45px;
     margin: 20px 0;
     width: 160px;
+}
+
+.word-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

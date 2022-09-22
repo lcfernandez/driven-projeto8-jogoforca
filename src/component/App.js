@@ -1,16 +1,6 @@
+import { useState } from "react";
 import forca0 from "../assets/images/forca0.png";
 import palavras from "../assets/palavras.js";
-
-function pickWord() {
-    const word = palavras[Math.floor(Math.random() * palavras.length)];
-    console.log(word);
-}
-
-function Button(props) {
-    return (
-        <button className="c-button-disabled">{props.label.toUpperCase()}</button>
-    );
-}
 
 export default function App() {
     const alfabet = [
@@ -18,18 +8,42 @@ export default function App() {
         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
     ];
 
+    const [word, setWord] = useState("");
+
+    function pickWord() {
+        setWord(palavras[Math.floor(Math.random() * palavras.length)]);
+    }
+
     return (
         <>
-            <div className="display">
+            <div className="container">
                 <img src={forca0} alt="Forca no estado inicial" />
-                <button className="pickWord" onClick={pickWord}>Escolher Palavra</button>
+
+                <div className="word-box">
+                    <div>
+                        <button
+                            className="pickWord"
+                            onClick={pickWord}
+                        >
+                            Escolher Palavra
+                        </button>
+                    </div>
+
+                    <div>
+                        {word}
+                    </div>
+                </div>
             </div>
 
             <div className="letters">
-                {alfabet.map((letter, index) => <Button
-                    label={letter}
-                    key={index}
-                />)}
+                {alfabet.map((letter, index) =>
+                    <button
+                        className="c-button-disabled"
+                        key={index}
+                    >
+                        {letter.toUpperCase()}
+                    </button>
+                )}
             </div>
 
             <div className="guess">
