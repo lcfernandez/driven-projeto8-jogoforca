@@ -1,5 +1,11 @@
 import { useState } from "react";
 import forca0 from "../assets/images/forca0.png";
+import forca1 from "../assets/images/forca1.png";
+import forca2 from "../assets/images/forca2.png";
+import forca3 from "../assets/images/forca3.png";
+import forca4 from "../assets/images/forca4.png";
+import forca5 from "../assets/images/forca5.png";
+import forca6 from "../assets/images/forca6.png";
 import palavras from "../assets/palavras.js";
 
 export default function App() {
@@ -8,15 +14,18 @@ export default function App() {
         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
     ];
 
-    //const [errors, setError] = useState(0);
+    const hangs = [forca0, forca1, forca2, forca3, forca4, forca5, forca6];
+
     const [enabledLettersIndex, setEnabledLettersIndex] = useState([]);
+    const [errors, setError] = useState(0);
+    const [hang, setHang] = useState(hangs[0]);
     const [maskedWord, setMaskedWord] = useState([]);
     const [normalizedWord, setNormalizedWord] = useState([]);
     const [started, setStarted] = useState(false);
     const [word, setWord] = useState([]);
 
     function chooseLetter(choosenLetter, choosenIndex) {
-        if(enabledLettersIndex.includes(choosenIndex)){
+        if(enabledLettersIndex.includes(choosenIndex) && errors < 6){
             const letterIndex = [];
 
             for (let i = 0; i < normalizedWord.length; i++) {
@@ -26,6 +35,12 @@ export default function App() {
             }
 
             console.log(letterIndex);
+
+            if (letterIndex.length === 0) {
+                const newErrorsAmount = errors + 1;
+                setError(newErrorsAmount);
+                setHang(hangs[newErrorsAmount]);
+            }
 
             setEnabledLettersIndex(enabledLettersIndex.filter(index => index !== choosenIndex));
         }
@@ -52,7 +67,7 @@ export default function App() {
     return (
         <>
             <div className="container">
-                <img src={forca0} alt="Forca no estado inicial" />
+                <img src={hang} alt={`Forca no estado ${errors}`} />
 
                 <div className="word-box">
                     <div>
