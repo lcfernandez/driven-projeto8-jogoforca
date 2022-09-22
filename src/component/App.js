@@ -9,20 +9,43 @@ export default function App() {
     ];
 
     //const [errors, setError] = useState(0);
-    const [enabledLetters, setEnabledLetters] = useState([]);
-    const [picked, setPicked] = useState(false);
+    const [enabledLettersIndex, setEnabledLettersIndex] = useState([]);
+    const [maskedWord, setMaskedWord] = useState([]);
+    const [normalizedWord, setNormalizedWord] = useState([]);
+    const [started, setStarted] = useState(false);
     const [word, setWord] = useState([]);
 
-    function pickWord() {
-        if (!picked) {
-            const word = palavras[Math.floor(Math.random() * palavras.length)];
-            const maskedWord = word.split("");
+    function chooseLetter(choosenLetter, choosenIndex) {
+        if(enabledLettersIndex.includes(choosenIndex)){
+            const letterIndex = [];
 
-            console.log(maskedWord);
-            
-            setEnabledLetters(alfabet.map((e, index) => index));
-            setPicked(true);
-            setWord(maskedWord.map(e => " _"));
+            for (let i = 0; i < normalizedWord.length; i++) {
+                if (choosenLetter === normalizedWord[i]) {
+                    letterIndex.push(i);
+                }
+            }
+
+            console.log(letterIndex);
+
+            setEnabledLettersIndex(enabledLettersIndex.filter(index => index !== choosenIndex));
+        }
+    }
+
+    function pickWord() {
+        if (!started) {
+            const word = palavras[Math.floor(Math.random() * palavras.length)];
+            const normalizedWord = word.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            const wordArray = word.split("");
+            const normalizedWordArray = normalizedWord.split("");
+
+            setEnabledLettersIndex(alfabet.map((letter, index) => index));
+            setMaskedWord(wordArray.map(letter => " _"));
+            setNormalizedWord(normalizedWordArray);
+            setStarted(true);
+            setWord(wordArray);
+
+            console.log(wordArray);
+            console.log(normalizedWordArray);
         }
     }
 
@@ -42,7 +65,7 @@ export default function App() {
                     </div>
 
                     <div>
-                        <h1>{word}</h1>
+                        <h1>{maskedWord}</h1>
                     </div>
                 </div>
             </div>
@@ -50,7 +73,8 @@ export default function App() {
             <div className="letters">
                 {alfabet.map((letter, index) =>
                     <button
-                        className={`c-button-${enabledLetters.includes(index) ? "enabled" : "disabled"}`}
+                        className={`c-button-${enabledLettersIndex.includes(index) ? "enabled" : "disabled"}`}
+                        onClick={() => chooseLetter(letter, index)}
                         key={index}
                     >
                         {letter.toUpperCase()}
