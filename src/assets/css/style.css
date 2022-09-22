@@ -6,6 +6,13 @@ button {
     font-weight: bold;
 }
 
+h1 {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 10px;
+}
+
 img {
     width: 300px;
 }
@@ -83,4 +90,5 @@ input {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    text-align: right;
 }

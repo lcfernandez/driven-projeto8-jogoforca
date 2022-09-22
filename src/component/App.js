@@ -8,10 +8,15 @@ export default function App() {
         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
     ];
 
-    const [word, setWord] = useState("");
+    const [word, setWord] = useState([]);
 
     function pickWord() {
-        setWord(palavras[Math.floor(Math.random() * palavras.length)]);
+        const word = palavras[Math.floor(Math.random() * palavras.length)];
+        const maskedWord = word.split("");
+
+        console.log(maskedWord);
+        
+        setWord(maskedWord.map(e => " _"));
     }
 
     return (
@@ -30,7 +35,7 @@ export default function App() {
                     </div>
 
                     <div>
-                        {word}
+                        <h1>{word}</h1>
                     </div>
                 </div>
             </div>
