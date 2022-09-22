@@ -15,6 +15,18 @@ input {
     width: 320px;
 }
 
+.c-button-disabled {
+    background-color: #9faab5;
+    border: none;
+    color: #61676f;
+}
+
+.c-button-enabled {
+    background-color: #e1ecf4;
+    border: #39739d solid 1px;
+    color: #39739d;
+}
+
 .display {
     display: flex;
     justify-content: space-between;
@@ -45,10 +57,7 @@ input {
 }
 
 .letters button {
-    background-color: #9faab5;
-    border: none;
     border-radius: 2px;
-    color: #61676f;
     height: 40px;
     margin: 3px;
     width: 40px;

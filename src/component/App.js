@@ -1,8 +1,14 @@
 import forca0 from "../assets/images/forca0.png";
+import palavras from "../assets/palavras.js";
+
+function pickWord() {
+    const word = palavras[Math.floor(Math.random() * palavras.length)];
+    console.log(word);
+}
 
 function Button(props) {
     return (
-        <button>{props.label.toUpperCase()}</button>
+        <button className="c-button-disabled">{props.label.toUpperCase()}</button>
     );
 }
 
@@ -16,20 +22,20 @@ export default function App() {
         <>
             <div className="display">
                 <img src={forca0} alt="Forca no estado inicial" />
-                <button className="pickWord">Escolher Palavra</button>
+                <button className="pickWord" onClick={pickWord}>Escolher Palavra</button>
             </div>
 
             <div className="letters">
-                {alfabet.map((letter) => <Button
+                {alfabet.map((letter, index) => <Button
                     label={letter}
-                    key={letter}
+                    key={index}
                 />)}
             </div>
 
             <div className="guess">
                 Já sei a palavra!
 
-                <input></input>
+                <input disabled></input>
 
                 <button>Chutar</button>
             </div>
