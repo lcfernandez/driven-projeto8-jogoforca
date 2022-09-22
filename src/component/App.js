@@ -21,11 +21,12 @@ export default function App() {
     const [hang, setHang] = useState(hangs[0]);
     const [maskedWord, setMaskedWord] = useState([]);
     const [normalizedWord, setNormalizedWord] = useState([]);
+    const [remainingHits, setRemainingHits] = useState(Number.POSITIVE_INFINITY);
     const [started, setStarted] = useState(false);
     const [word, setWord] = useState([]);
 
     function chooseLetter(choosenLetter, choosenIndex) {
-        if(enabledLettersIndex.includes(choosenIndex) && flaws < 6){
+        if(enabledLettersIndex.includes(choosenIndex) && flaws < 6 && remainingHits > 0){
             if (!normalizedWord.includes(choosenLetter)) {
                 const flawsUpdate = flaws + 1;
                 
@@ -34,6 +35,7 @@ export default function App() {
             } else {
                 const newMaskedWord = normalizedWord.map((letter, index) => {
                     if (letter === choosenLetter) {
+                        setRemainingHits(remainingHits - 1);
                         return word[index];
                     } else {
                         return maskedWord[index];
@@ -51,17 +53,15 @@ export default function App() {
         if (!started) {
             const pickedWord = words[Math.floor(Math.random() * words.length)];
             const wordArray = pickedWord.split("");
-            const normalizedWordArray = pickedWord.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split("");
 
             setEnabledLettersIndex(alfabet.map((letter, index) => index));
             setMaskedWord(wordArray.map(letter => " _"));
-            setNormalizedWord(normalizedWordArray);
-            setRemainingHits();
+            setNormalizedWord(pickedWord.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(""));
+            setRemainingHits(pickedWord.length);
             setStarted(true);
             setWord(wordArray);
 
-            console.log(wordArray);
-            console.log(normalizedWordArray);
+            console.log(pickedWord);
         }
     }
 
@@ -81,7 +81,7 @@ export default function App() {
                     </div>
 
                     <div>
-                        <h1>{maskedWord}</h1>
+                        <h1 className={remainingHits === 0 ? "won" : ""}>{maskedWord}</h1>
                     </div>
                 </div>
             </div>

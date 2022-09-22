@@ -86,6 +86,10 @@ input {
     width: 160px;
 }
 
+.won {
+    color: #27ae60;
+}
+
 .word-box {
     display: flex;
     flex-direction: column;
