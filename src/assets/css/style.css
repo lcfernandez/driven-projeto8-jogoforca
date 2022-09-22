@@ -76,6 +76,10 @@ input {
     width: 40px;
 }
 
+.lost {
+    color: #ff0000;
+}
+
 .pickWord {
     background-color: #27ae60;
     border: none;

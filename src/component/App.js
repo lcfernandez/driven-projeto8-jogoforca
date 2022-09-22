@@ -81,7 +81,7 @@ export default function App() {
                     </div>
 
                     <div>
-                        <h1 className={remainingHits === 0 ? "won" : ""}>{maskedWord}</h1>
+                        <h1 className={remainingHits === 0 ? "won" : flaws === 6 ? "lost" : ""}>{maskedWord}</h1>
                     </div>
                 </div>
             </div>
