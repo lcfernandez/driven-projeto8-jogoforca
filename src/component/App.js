@@ -26,20 +26,20 @@ export default function App() {
 
     function chooseLetter(choosenLetter, choosenIndex) {
         if(enabledLettersIndex.includes(choosenIndex) && errors < 6){
-            const letterIndex = [];
-
-            for (let i = 0; i < normalizedWord.length; i++) {
-                if (choosenLetter === normalizedWord[i]) {
-                    letterIndex.push(i);
-                }
-            }
-
-            console.log(letterIndex);
-
-            if (letterIndex.length === 0) {
+            if (!normalizedWord.includes(choosenLetter)) {
                 const newErrorsAmount = errors + 1;
                 setError(newErrorsAmount);
                 setHang(hangs[newErrorsAmount]);
+            } else {
+                const newMaskedWord = normalizedWord.map((letter, index) => {
+                    if (letter === choosenLetter) {
+                        return word[index];
+                    } else {
+                        return maskedWord[index];
+                    }
+                });
+
+                setMaskedWord(newMaskedWord);
             }
 
             setEnabledLettersIndex(enabledLettersIndex.filter(index => index !== choosenIndex));
