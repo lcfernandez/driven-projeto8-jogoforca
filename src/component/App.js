@@ -1,12 +1,12 @@
 import { useState } from "react";
-import forca0 from "../assets/images/forca0.png";
-import forca1 from "../assets/images/forca1.png";
-import forca2 from "../assets/images/forca2.png";
-import forca3 from "../assets/images/forca3.png";
-import forca4 from "../assets/images/forca4.png";
-import forca5 from "../assets/images/forca5.png";
-import forca6 from "../assets/images/forca6.png";
-import palavras from "../assets/palavras.js";
+import hang0 from "../assets/images/hang0.png";
+import hang1 from "../assets/images/hang1.png";
+import hang2 from "../assets/images/hang2.png";
+import hang3 from "../assets/images/hang3.png";
+import hang4 from "../assets/images/hang4.png";
+import hang5 from "../assets/images/hang5.png";
+import hang6 from "../assets/images/hang6.png";
+import words from "../assets/words.js";
 
 export default function App() {
     const alfabet = [
@@ -14,10 +14,10 @@ export default function App() {
         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
     ];
 
-    const hangs = [forca0, forca1, forca2, forca3, forca4, forca5, forca6];
+    const hangs = [hang0, hang1, hang2, hang3, hang4, hang5, hang6];
 
     const [enabledLettersIndex, setEnabledLettersIndex] = useState([]);
-    const [errors, setError] = useState(0);
+    const [flaws, setFlaws] = useState(0);
     const [hang, setHang] = useState(hangs[0]);
     const [maskedWord, setMaskedWord] = useState([]);
     const [normalizedWord, setNormalizedWord] = useState([]);
@@ -25,11 +25,12 @@ export default function App() {
     const [word, setWord] = useState([]);
 
     function chooseLetter(choosenLetter, choosenIndex) {
-        if(enabledLettersIndex.includes(choosenIndex) && errors < 6){
+        if(enabledLettersIndex.includes(choosenIndex) && flaws < 6){
             if (!normalizedWord.includes(choosenLetter)) {
-                const newErrorsAmount = errors + 1;
-                setError(newErrorsAmount);
-                setHang(hangs[newErrorsAmount]);
+                const flawsUpdate = flaws + 1;
+                
+                setFlaws(flawsUpdate);
+                setHang(hangs[flawsUpdate]);
             } else {
                 const newMaskedWord = normalizedWord.map((letter, index) => {
                     if (letter === choosenLetter) {
@@ -48,14 +49,14 @@ export default function App() {
 
     function pickWord() {
         if (!started) {
-            const word = palavras[Math.floor(Math.random() * palavras.length)];
-            const normalizedWord = word.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            const wordArray = word.split("");
-            const normalizedWordArray = normalizedWord.split("");
+            const pickedWord = words[Math.floor(Math.random() * words.length)];
+            const wordArray = pickedWord.split("");
+            const normalizedWordArray = pickedWord.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split("");
 
             setEnabledLettersIndex(alfabet.map((letter, index) => index));
             setMaskedWord(wordArray.map(letter => " _"));
             setNormalizedWord(normalizedWordArray);
+            setRemainingHits();
             setStarted(true);
             setWord(wordArray);
 
@@ -67,7 +68,7 @@ export default function App() {
     return (
         <>
             <div className="container">
-                <img src={hang} alt={`Forca no estado ${errors}`} />
+                <img src={hang} alt={`Forca no estado ${flaws}`} />
 
                 <div className="word-box">
                     <div>
