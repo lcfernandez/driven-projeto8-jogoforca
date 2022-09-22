@@ -8,9 +8,10 @@ export default function App() {
         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
     ];
 
-    const [word, setWord] = useState([]);
-    const [picked, setPicked] = useState(false);
     //const [errors, setError] = useState(0);
+    const [enabledLetters, setEnabledLetters] = useState([]);
+    const [picked, setPicked] = useState(false);
+    const [word, setWord] = useState([]);
 
     function pickWord() {
         if (!picked) {
@@ -19,8 +20,9 @@ export default function App() {
 
             console.log(maskedWord);
             
-            setWord(maskedWord.map(e => " _"));
+            setEnabledLetters(alfabet.map((e, index) => index));
             setPicked(true);
+            setWord(maskedWord.map(e => " _"));
         }
     }
 
@@ -48,7 +50,7 @@ export default function App() {
             <div className="letters">
                 {alfabet.map((letter, index) =>
                     <button
-                        className="c-button-disabled"
+                        className={`c-button-${enabledLetters.includes(index) ? "enabled" : "disabled"}`}
                         key={index}
                     >
                         {letter.toUpperCase()}
