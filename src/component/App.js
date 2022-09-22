@@ -9,14 +9,19 @@ export default function App() {
     ];
 
     const [word, setWord] = useState([]);
+    const [picked, setPicked] = useState(false);
+    //const [errors, setError] = useState(0);
 
     function pickWord() {
-        const word = palavras[Math.floor(Math.random() * palavras.length)];
-        const maskedWord = word.split("");
+        if (!picked) {
+            const word = palavras[Math.floor(Math.random() * palavras.length)];
+            const maskedWord = word.split("");
 
-        console.log(maskedWord);
-        
-        setWord(maskedWord.map(e => " _"));
+            console.log(maskedWord);
+            
+            setWord(maskedWord.map(e => " _"));
+            setPicked(true);
+        }
     }
 
     return (
