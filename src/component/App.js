@@ -6,7 +6,7 @@ import hang3 from "../assets/images/hang3.png";
 import hang4 from "../assets/images/hang4.png";
 import hang5 from "../assets/images/hang5.png";
 import hang6 from "../assets/images/hang6.png";
-import words from "../assets/words.js";
+import words from "../assets/palavras.js";
 
 export default function App() {
     const alfabet = [
@@ -32,9 +32,7 @@ export default function App() {
                 const flawsUpdate = flaws + 1;
                 
                 if (flawsUpdate === 6) {
-                    const enabledLettersIndexUpdate = enabledLettersIndex.length = 0;
-                    setEnabledLettersIndex(enabledLettersIndexUpdate);
-                    setInputStatus(true);
+                    finishGameStatus();
                 }
 
                 setFlaws(flawsUpdate);
@@ -51,9 +49,7 @@ export default function App() {
                 const remainingHitsUpdate = remainingHits - normalizedWord.filter(letter => letter === choosenLetter).length;
 
                 if (remainingHitsUpdate === 0) {
-                    const enabledLettersIndexUpdate = enabledLettersIndex.length = 0;
-                    setEnabledLettersIndex(enabledLettersIndexUpdate);
-                    setInputStatus(true);
+                    finishGameStatus();
                 }
 
                 setMaskedWord(newMaskedWord);
@@ -62,6 +58,11 @@ export default function App() {
 
             setEnabledLettersIndex(enabledLettersIndex.filter(index => index !== choosenIndex));
         }
+    }
+
+    function finishGameStatus() {
+        setEnabledLettersIndex(enabledLettersIndex.length = 0);
+        setInputStatus(true);
     }
 
     function pickWord() {
