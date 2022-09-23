@@ -21,7 +21,7 @@ export default function App() {
     const [hang, setHang] = useState(hangs[0]);
     const [maskedWord, setMaskedWord] = useState([]);
     const [normalizedWord, setNormalizedWord] = useState([]);
-    const [remainingHits, setRemainingHits] = useState(Number.POSITIVE_INFINITY);
+    const [remainingHits, setRemainingHits] = useState(0);
     const [started, setStarted] = useState(false);
     const [word, setWord] = useState([]);
 
@@ -81,7 +81,7 @@ export default function App() {
                     </div>
 
                     <div>
-                        <h1 className={remainingHits === 0 ? "won" : flaws === 6 ? "lost" : ""}>{maskedWord}</h1>
+                        <h1 className={(remainingHits === 0) ? "won" : ((flaws === 6) ? "lost" : "")}>{maskedWord}</h1>
                     </div>
                 </div>
             </div>
