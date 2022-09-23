@@ -19,6 +19,7 @@ export default function App() {
     const [enabledLettersIndex, setEnabledLettersIndex] = useState([]);
     const [flaws, setFlaws] = useState(0);
     const [hang, setHang] = useState(hangs[0]);
+    const [inputStatus, setInputStatus] = useState(true);
     const [maskedWord, setMaskedWord] = useState([]);
     const [normalizedWord, setNormalizedWord] = useState([]);
     const [remainingHits, setRemainingHits] = useState(0);
@@ -33,6 +34,7 @@ export default function App() {
                 if (flawsUpdate === 6) {
                     const enabledLettersIndexUpdate = enabledLettersIndex.length = 0;
                     setEnabledLettersIndex(enabledLettersIndexUpdate);
+                    setInputStatus(true);
                 }
 
                 setFlaws(flawsUpdate);
@@ -51,6 +53,7 @@ export default function App() {
                 if (remainingHitsUpdate === 0) {
                     const enabledLettersIndexUpdate = enabledLettersIndex.length = 0;
                     setEnabledLettersIndex(enabledLettersIndexUpdate);
+                    setInputStatus(true);
                 }
 
                 setMaskedWord(newMaskedWord);
@@ -58,7 +61,6 @@ export default function App() {
             }
 
             setEnabledLettersIndex(enabledLettersIndex.filter(index => index !== choosenIndex));
-            console.log(enabledLettersIndex);
         }
     }
 
@@ -68,6 +70,7 @@ export default function App() {
             const wordArray = pickedWord.split("");
 
             setEnabledLettersIndex(alfabet.map((letter, index) => index));
+            setInputStatus(false);
             setMaskedWord(wordArray.map(letter => " _"));
             setNormalizedWord(pickedWord.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(""));
             setRemainingHits(pickedWord.length);
@@ -114,7 +117,7 @@ export default function App() {
             <div className="guess">
                 Já sei a palavra!
 
-                <input disabled></input>
+                <input disabled={inputStatus}></input>
 
                 <button>Chutar</button>
             </div>
