@@ -7,7 +7,7 @@ button {
 }
 
 h1 {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:'Segoe UI', sans-serif;
     font-size: 30px;
     font-weight: bold;
     margin: 10px;
@@ -21,7 +21,7 @@ input {
     border-radius: 5px;
     height: 30px;
     margin: 0 10px;
-    width: 320px;
+    width: 280px;
 }
 
 
@@ -36,7 +36,7 @@ input {
 
 .c-button-enabled {
     background-color: #e1ecf4;
-    border: #39739d solid 1px;
+    border: 1px solid #39739d;
     color: #39739d;
 }
 
@@ -57,14 +57,14 @@ input {
 }
 
 .guess {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:'Segoe UI', sans-serif;
     margin: 30px auto;
-    width: 550px;
+    width: 510px;
 }
 
 .guess button {
     background-color: #e1ecf4;
-    border: #39739d solid 1px;
+    border: 1px solid #39739d;
     border-radius: 5px;
     color: #39739d;
     font-size: 14px;
