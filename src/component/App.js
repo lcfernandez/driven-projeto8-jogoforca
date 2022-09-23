@@ -35,7 +35,6 @@ export default function App() {
             } else {
                 const newMaskedWord = normalizedWord.map((letter, index) => {
                     if (letter === choosenLetter) {
-                        setRemainingHits(remainingHits - 1);
                         return word[index];
                     } else {
                         return maskedWord[index];
@@ -43,6 +42,7 @@ export default function App() {
                 });
 
                 setMaskedWord(newMaskedWord);
+                setRemainingHits(remainingHits - normalizedWord.filter(letter => letter === choosenLetter).length);
             }
 
             setEnabledLettersIndex(enabledLettersIndex.filter(index => index !== choosenIndex));
