@@ -40,6 +40,16 @@ input {
     color: #39739d;
 }
 
+.chooseWord {
+    background-color: #27ae60;
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    height: 45px;
+    margin: 20px 0;
+    width: 160px;
+}
+
 .container {
     display: flex;
     justify-content: space-between;
@@ -47,6 +57,7 @@ input {
 }
 
 .guess {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 30px auto;
     width: 550px;
 }
@@ -78,16 +89,6 @@ input {
 
 .lost {
     color: #ff0000;
-}
-
-.pickWord {
-    background-color: #27ae60;
-    border: none;
-    border-radius: 10px;
-    color: #ffffff;
-    height: 45px;
-    margin: 20px 0;
-    width: 160px;
 }
 
 .won {

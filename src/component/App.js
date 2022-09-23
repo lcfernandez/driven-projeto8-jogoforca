@@ -62,21 +62,7 @@ export default function App() {
         }
     }
 
-    function finishGameStatus() {
-        enabledLettersIndex.length = 0
-
-        setEnabledLettersIndex(enabledLettersIndex);
-        setFinished(true);
-        setGuess("");
-        setInputDisabled(true);
-        setStarted(false);
-    }
-
-    function normalizeWordToArray(originalWord) {
-        return originalWord.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split("");
-    }
-
-    function pickWord() {
+    function chooseWord() {
         if (!started) {
             const pickedWord = words[Math.floor(Math.random() * words.length)];
             const wordArray = pickedWord.split("");
@@ -97,26 +83,44 @@ export default function App() {
         }
     }
 
+    function finishGameStatus() {
+        enabledLettersIndex.length = 0
+
+        setEnabledLettersIndex(enabledLettersIndex);
+        setFinished(true);
+        setGuess("");
+        setInputDisabled(true);
+        setStarted(false);
+    }
+
+    function normalizeWordToArray(originalWord) {
+        return originalWord.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split("");
+    }
+
     return (
         <>
             <div className="container">
-                <img src={hang} alt={`Forca no estado ${flaws}`} />
+                <img src={hang} alt={`Forca no estado ${flaws}`} data-identifier="game-image" />
 
                 <div className="word-box">
                     <div>
                         <button
-                            className="pickWord"
-                            onClick={pickWord}
+                            className="chooseWord"
+                            onClick={chooseWord}
+                            data-identifier="choose-word"
                         >
                             Escolher Palavra
                         </button>
                     </div>
 
                     <div>
-                        <h1 className={
-                            (remainingHits === 0) ? "won" : ((flaws === 6) ? "lost" : "")
-                        }>
-                                {(flaws === 6) ? word : maskedWord}
+                        <h1
+                            className={
+                                (remainingHits === 0) ? "won" : ((flaws === 6) ? "lost" : "")
+                            }
+                            data-identifier="word"
+                        >
+                            {(flaws === 6) ? word : maskedWord}
                         </h1>
                     </div>
                 </div>
@@ -127,6 +131,7 @@ export default function App() {
                     <button
                         className={`c-button-${enabledLettersIndex.includes(index) ? "enabled" : "disabled"}`}
                         onClick={() => chooseLetter(letter, index)}
+                        data-identifier="letter"
                         key={index}
                     >
                         {letter.toUpperCase()}
@@ -143,6 +148,7 @@ export default function App() {
                     onChange={
                         e => setGuess(e.target.value)
                     }
+                    data-identifier="type-guess"
                 />
 
                 <button
@@ -167,6 +173,7 @@ export default function App() {
                             }
                         }
                     }
+                    data-identifier="guess-button"
                 >
                     Chutar
                 </button>
