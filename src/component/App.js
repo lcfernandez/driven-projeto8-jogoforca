@@ -1,11 +1,11 @@
 import { useState } from "react";
-import hang0 from "../assets/images/hang0.png";
-import hang1 from "../assets/images/hang1.png";
-import hang2 from "../assets/images/hang2.png";
-import hang3 from "../assets/images/hang3.png";
-import hang4 from "../assets/images/hang4.png";
-import hang5 from "../assets/images/hang5.png";
-import hang6 from "../assets/images/hang6.png";
+import hang0 from "../assets/images/forca0.png";
+import hang1 from "../assets/images/forca1.png";
+import hang2 from "../assets/images/forca2.png";
+import hang3 from "../assets/images/forca3.png";
+import hang4 from "../assets/images/forca4.png";
+import hang5 from "../assets/images/forca5.png";
+import hang6 from "../assets/images/forca6.png";
 import words from "../assets/palavras.js";
 
 export default function App() {
@@ -21,7 +21,7 @@ export default function App() {
     const [flaws, setFlaws] = useState(0);
     const [guess, setGuess] = useState("");
     const [hang, setHang] = useState(hangs[0]);
-    const [inputStatus, setInputStatus] = useState(true);
+    const [inputDisabled, setInputDisabled] = useState(true);
     const [maskedWord, setMaskedWord] = useState([]);
     const [normalizedWord, setNormalizedWord] = useState([]);
     const [remainingHits, setRemainingHits] = useState(0);
@@ -64,10 +64,12 @@ export default function App() {
 
     function finishGameStatus() {
         enabledLettersIndex.length = 0
+
         setEnabledLettersIndex(enabledLettersIndex);
         setFinished(true);
         setGuess("");
-        setInputStatus(true);
+        setInputDisabled(true);
+        setStarted(false);
     }
 
     function normalizeWordToArray(originalWord) {
@@ -80,14 +82,18 @@ export default function App() {
             const wordArray = pickedWord.split("");
 
             setEnabledLettersIndex(alfabet.map((letter, index) => index));
-            setInputStatus(false);
+            setInputDisabled(false);
             setMaskedWord(wordArray.map(letter => " _"));
             setNormalizedWord(normalizeWordToArray(pickedWord));
             setRemainingHits(pickedWord.length);
             setStarted(true);
             setWord(wordArray);
+        }
 
-            console.log(pickedWord);
+        if (finished) {
+            setFinished(false);
+            setFlaws(0);
+            setHang(hangs[0]);
         }
     }
 
@@ -107,7 +113,11 @@ export default function App() {
                     </div>
 
                     <div>
-                        <h1 className={(remainingHits === 0) ? "won" : ((flaws === 6) ? "lost" : "")}>{(flaws === 6) ? word : maskedWord}</h1>
+                        <h1 className={
+                            (remainingHits === 0) ? "won" : ((flaws === 6) ? "lost" : "")
+                        }>
+                                {(flaws === 6) ? word : maskedWord}
+                        </h1>
                     </div>
                 </div>
             </div>
@@ -128,7 +138,7 @@ export default function App() {
                 Já sei a palavra!
 
                 <input
-                    disabled={inputStatus}
+                    disabled={inputDisabled}
                     value={guess}
                     onChange={
                         e => setGuess(e.target.value)
@@ -142,7 +152,7 @@ export default function App() {
                                 if (guess.trim().length === 0) {
                                     alert("Tente uma palavra válida!");
                                 } else {
-                                    const normalizedGuess = normalizeWordToArray(guess);
+                                    const normalizedGuess = normalizeWordToArray(guess.toLowerCase());
 
                                     if ((JSON.stringify(normalizedGuess) === JSON.stringify(normalizedWord))) {
                                         setMaskedWord(word);
