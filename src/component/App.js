@@ -30,6 +30,11 @@ export default function App() {
             if (!normalizedWord.includes(choosenLetter)) {
                 const flawsUpdate = flaws + 1;
                 
+                if (flawsUpdate === 6) {
+                    const enabledLettersIndexUpdate = enabledLettersIndex.length = 0;
+                    setEnabledLettersIndex(enabledLettersIndexUpdate);
+                }
+
                 setFlaws(flawsUpdate);
                 setHang(hangs[flawsUpdate]);
             } else {
@@ -41,11 +46,19 @@ export default function App() {
                     }
                 });
 
+                const remainingHitsUpdate = remainingHits - normalizedWord.filter(letter => letter === choosenLetter).length;
+
+                if (remainingHitsUpdate === 0) {
+                    const enabledLettersIndexUpdate = enabledLettersIndex.length = 0;
+                    setEnabledLettersIndex(enabledLettersIndexUpdate);
+                }
+
                 setMaskedWord(newMaskedWord);
-                setRemainingHits(remainingHits - normalizedWord.filter(letter => letter === choosenLetter).length);
+                setRemainingHits(remainingHitsUpdate);
             }
 
             setEnabledLettersIndex(enabledLettersIndex.filter(index => index !== choosenIndex));
+            console.log(enabledLettersIndex);
         }
     }
 
@@ -81,7 +94,7 @@ export default function App() {
                     </div>
 
                     <div>
-                        <h1 className={(remainingHits === 0) ? "won" : ((flaws === 6) ? "lost" : "")}>{maskedWord}</h1>
+                        <h1 className={(remainingHits === 0) ? "won" : ((flaws === 6) ? "lost" : "")}>{(flaws === 6) ? word : maskedWord}</h1>
                     </div>
                 </div>
             </div>
