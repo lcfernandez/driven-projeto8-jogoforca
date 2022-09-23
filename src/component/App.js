@@ -17,7 +17,9 @@ export default function App() {
     const hangs = [hang0, hang1, hang2, hang3, hang4, hang5, hang6];
 
     const [enabledLettersIndex, setEnabledLettersIndex] = useState([]);
+    const [finished, setFinished] = useState(false);
     const [flaws, setFlaws] = useState(0);
+    const [guess, setGuess] = useState("");
     const [hang, setHang] = useState(hangs[0]);
     const [inputStatus, setInputStatus] = useState(true);
     const [maskedWord, setMaskedWord] = useState([]);
@@ -61,8 +63,15 @@ export default function App() {
     }
 
     function finishGameStatus() {
-        setEnabledLettersIndex(enabledLettersIndex.length = 0);
+        enabledLettersIndex.length = 0
+        setEnabledLettersIndex(enabledLettersIndex);
+        setFinished(true);
+        setGuess("");
         setInputStatus(true);
+    }
+
+    function normalizeWordToArray(originalWord) {
+        return originalWord.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split("");
     }
 
     function pickWord() {
@@ -73,7 +82,7 @@ export default function App() {
             setEnabledLettersIndex(alfabet.map((letter, index) => index));
             setInputStatus(false);
             setMaskedWord(wordArray.map(letter => " _"));
-            setNormalizedWord(pickedWord.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(""));
+            setNormalizedWord(normalizeWordToArray(pickedWord));
             setRemainingHits(pickedWord.length);
             setStarted(true);
             setWord(wordArray);
@@ -118,9 +127,39 @@ export default function App() {
             <div className="guess">
                 Já sei a palavra!
 
-                <input disabled={inputStatus}></input>
+                <input
+                    disabled={inputStatus}
+                    value={guess}
+                    onChange={
+                        e => setGuess(e.target.value)
+                    }
+                />
 
-                <button>Chutar</button>
+                <button
+                    onClick={
+                        () => {
+                            if (started && !finished) {
+                                if (guess.trim().length === 0) {
+                                    alert("Tente uma palavra válida!");
+                                } else {
+                                    const normalizedGuess = normalizeWordToArray(guess);
+
+                                    if ((JSON.stringify(normalizedGuess) === JSON.stringify(normalizedWord))) {
+                                        setMaskedWord(word);
+                                        setRemainingHits(0);
+                                    } else {
+                                        setFlaws(6);
+                                        setHang(hangs[6]);
+                                    }
+
+                                    finishGameStatus();
+                                }
+                            }
+                        }
+                    }
+                >
+                    Chutar
+                </button>
             </div>
         </>
     );
