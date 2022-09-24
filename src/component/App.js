@@ -17,7 +17,6 @@ export default function App() {
     const hangs = [hang0, hang1, hang2, hang3, hang4, hang5, hang6];
 
     const [enabledLettersIndex, setEnabledLettersIndex] = useState([]);
-    const [finished, setFinished] = useState(false);
     const [flaws, setFlaws] = useState(0);
     const [guess, setGuess] = useState("");
     const [hang, setHang] = useState(hangs[0]);
@@ -25,7 +24,6 @@ export default function App() {
     const [maskedWord, setMaskedWord] = useState([]);
     const [normalizedWord, setNormalizedWord] = useState([]);
     const [remainingHits, setRemainingHits] = useState(0);
-    const [started, setStarted] = useState(false);
     const [word, setWord] = useState([]);
 
     function chooseLetter(choosenLetter, choosenIndex) {
@@ -63,22 +61,19 @@ export default function App() {
     }
 
     function chooseWord() {
-        if (!started) {
-            const pickedWord = words[Math.floor(Math.random() * words.length)];
-            const wordArray = pickedWord.split("");
+        const pickedWord = words[Math.floor(Math.random() * words.length)];
+        const wordArray = pickedWord.split("");
 
-            setEnabledLettersIndex(alfabet.map((letter, index) => index));
-            setInputDisabled(false);
-            setMaskedWord(wordArray.map(letter => " _"));
-            setNormalizedWord(normalizeWordToArray(pickedWord));
-            setRemainingHits(pickedWord.length);
-            setStarted(true);
-            setWord(wordArray);
-        }
+        setEnabledLettersIndex(alfabet.map((letter, index) => index));
+        setInputDisabled(false);
+        setMaskedWord(wordArray.map(letter => " _"));
+        setNormalizedWord(normalizeWordToArray(pickedWord));
+        setRemainingHits(pickedWord.length);
+        setWord(wordArray);
 
-        if (finished) {
-            setFinished(false);
+        if (word.length > 0) {
             setFlaws(0);
+            setGuess("");
             setHang(hangs[0]);
         }
     }
@@ -87,10 +82,8 @@ export default function App() {
         enabledLettersIndex.length = 0
 
         setEnabledLettersIndex(enabledLettersIndex);
-        setFinished(true);
         setGuess("");
         setInputDisabled(true);
-        setStarted(false);
     }
 
     function normalizeWordToArray(originalWord) {
@@ -154,7 +147,7 @@ export default function App() {
                 <button
                     onClick={
                         () => {
-                            if (started && !finished) {
+                            if (flaws < 6 && remainingHits > 0) {
                                 if (guess.trim().length === 0) {
                                     alert("Tente uma palavra válida!");
                                 } else {
