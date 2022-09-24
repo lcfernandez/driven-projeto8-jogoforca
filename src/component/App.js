@@ -16,28 +16,26 @@ export default function App() {
 
     const hangs = [hang0, hang1, hang2, hang3, hang4, hang5, hang6];
 
-    const [enabledLettersIndex, setEnabledLettersIndex] = useState([]);
-    const [flaws, setFlaws] = useState(0);
+    const [enabledLetters, setEnabledLetters] = useState([]);
     const [guess, setGuess] = useState("");
     const [hang, setHang] = useState(hangs[0]);
     const [inputDisabled, setInputDisabled] = useState(true);
-    const [maskedWord, setMaskedWord] = useState([]);
-    const [normalizedWord, setNormalizedWord] = useState([]);
+    const [mistakes, setMistakes] = useState(0);
     const [remainingHits, setRemainingHits] = useState(0);
     const [word, setWord] = useState([]);
 
-    function chooseLetter(choosenLetter, choosenIndex) {
-        if(enabledLettersIndex.includes(choosenIndex) && flaws < 6 && remainingHits > 0){
-            if (!normalizedWord.includes(choosenLetter)) {
-                const flawsUpdate = flaws + 1;
-                
-                if (flawsUpdate === 6) {
-                    finishGameStatus();
-                }
+    // states based on the choosen word, to facilitate the display and the comparison:
+    // word with unknown letters replaced by underscores ("_")
+    const [maskedWord, setMaskedWord] = useState([]);
 
-                setFlaws(flawsUpdate);
-                setHang(hangs[flawsUpdate]);
-            } else {
+    // word with accents/diacritics removed
+    const [normalizedWord, setNormalizedWord] = useState([]);
+
+    function chooseLetter(choosenLetter) {
+        if (enabledLetters.includes(choosenLetter)){
+            if (normalizedWord.includes(choosenLetter)) {
+
+                // replacing the underscores with the letters
                 const newMaskedWord = normalizedWord.map((letter, index) => {
                     if (letter === choosenLetter) {
                         return word[index];
@@ -46,54 +44,66 @@ export default function App() {
                     }
                 });
 
-                const remainingHitsUpdate = remainingHits - normalizedWord.filter(letter => letter === choosenLetter).length;
+                setMaskedWord(newMaskedWord);
 
+                // calculating how many hits the player got
+                const remainingHitsUpdate = remainingHits - normalizedWord.filter(letter => letter === choosenLetter).length;
+                setRemainingHits(remainingHitsUpdate);
+
+                // checking if it was the last remaining hit(s)
                 if (remainingHitsUpdate === 0) {
-                    finishGameStatus();
+                    finishGame();
+                    return;
                 }
 
-                setMaskedWord(newMaskedWord);
-                setRemainingHits(remainingHitsUpdate);
+            } else {
+                
+                // increasing the quantity of mistakes and updating the image
+                const mistakesUpdate = mistakes + 1;
+                setHang(hangs[mistakesUpdate]);
+                setMistakes(mistakesUpdate);
+
+                // checking if it was the last allowed mistake
+                if (mistakesUpdate === 6) {
+                    finishGame();
+                    return;
+                }
+
             }
 
-            setEnabledLettersIndex(enabledLettersIndex.filter(index => index !== choosenIndex));
+            setEnabledLetters(enabledLetters.filter(letter => letter !== choosenLetter));
         }
     }
 
     function chooseWord() {
         const pickedWord = words[Math.floor(Math.random() * words.length)];
         const wordArray = pickedWord.split("");
-
-        setEnabledLettersIndex(alfabet.map((letter, index) => index));
+        setEnabledLetters(alfabet.map(letter => letter));
+        setGuess("");
+        setHang(hangs[0]);
         setInputDisabled(false);
         setMaskedWord(wordArray.map(letter => " _"));
-        setNormalizedWord(normalizeWordToArray(pickedWord));
+        setMistakes(0);
+        setNormalizedWord(normalizeWord(pickedWord));
         setRemainingHits(pickedWord.length);
         setWord(wordArray);
-
-        if (word.length > 0) {
-            setFlaws(0);
-            setGuess("");
-            setHang(hangs[0]);
-        }
     }
 
-    function finishGameStatus() {
-        enabledLettersIndex.length = 0
-
-        setEnabledLettersIndex(enabledLettersIndex);
+    function finishGame() {
+        setEnabledLetters([]);
         setGuess("");
         setInputDisabled(true);
     }
 
-    function normalizeWordToArray(originalWord) {
+    // removes accents/diacritics from the word and return it into an array
+    function normalizeWord(originalWord) {
         return originalWord.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split("");
     }
 
     return (
         <>
             <div className="container">
-                <img src={hang} alt={`Forca no estado ${flaws}`} data-identifier="game-image" />
+                <img src={hang} alt={`Forca no estado ${mistakes}`} data-identifier="game-image" />
 
                 <div className="word-box">
                     <div>
@@ -109,23 +119,23 @@ export default function App() {
                     <div>
                         <h1
                             className={
-                                (remainingHits === 0) ? "won" : ((flaws === 6) ? "lost" : "")
+                                (remainingHits === 0) ? "won" : ((mistakes === 6) ? "lost" : "")
                             }
                             data-identifier="word"
                         >
-                            {(flaws === 6) ? word : maskedWord}
+                            {(mistakes === 6) ? word : maskedWord}
                         </h1>
                     </div>
                 </div>
             </div>
 
             <div className="letters">
-                {alfabet.map((letter, index) =>
+                {alfabet.map((letter) =>
                     <button
-                        className={`c-button-${enabledLettersIndex.includes(index) ? "enabled" : "disabled"}`}
-                        onClick={() => chooseLetter(letter, index)}
+                        className={`c-button-${enabledLetters.includes(letter) ? "enabled" : "disabled"}`}
+                        onClick={() => chooseLetter(letter)}
                         data-identifier="letter"
-                        key={index}
+                        key={letter}
                     >
                         {letter.toUpperCase()}
                     </button>
@@ -147,21 +157,21 @@ export default function App() {
                 <button
                     onClick={
                         () => {
-                            if (flaws < 6 && remainingHits > 0) {
+                            if (mistakes < 6 && remainingHits > 0) {
                                 if (guess.trim().length === 0) {
                                     alert("Tente uma palavra válida!");
                                 } else {
-                                    const normalizedGuess = normalizeWordToArray(guess.toLowerCase());
+                                    const normalizedGuess = normalizeWord(guess.toLowerCase());
 
                                     if ((JSON.stringify(normalizedGuess) === JSON.stringify(normalizedWord))) {
                                         setMaskedWord(word);
                                         setRemainingHits(0);
                                     } else {
-                                        setFlaws(6);
                                         setHang(hangs[6]);
+                                        setMistakes(6);
                                     }
 
-                                    finishGameStatus();
+                                    finishGame();
                                 }
                             }
                         }
