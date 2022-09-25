@@ -82,7 +82,7 @@ export default function App() {
         setGuess("");
         setHang(hangs[0]);
         setInputDisabled(false);
-        setMaskedWord(wordArray.map(letter => " _"));
+        setMaskedWord(wordArray.map(() => " _"));
         setMistakes(0);
         setNormalizedWord(normalizeWord(pickedWord));
         setRemainingHits(pickedWord.length);

@@ -1,3 +1,11 @@
+# driven-projeto8-jogoforca
+
+* **Projeto #08 - Jogo da Forca** do aluno Luiz Cláudio F. Fernandez, Turma 8 da Driven.
+
+* **Deploy** (vulgo *Link da Titia*): https://driven-projeto8-jogoforca.vercel.app
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
