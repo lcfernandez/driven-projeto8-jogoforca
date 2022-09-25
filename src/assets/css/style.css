@@ -1,103 +1,133 @@
+
+/* box-sizing best practices */
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+
+
 /* tags */
 
 button {
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
 }
 
 h1 {
-    font-family:'Segoe UI', sans-serif;
-    font-size: 30px;
+    font-size: 2rem;
     font-weight: bold;
     margin: 10px;
+    max-width: 95%;
+    text-align: right;
+    word-wrap: break-word;
 }
 
 img {
-    width: 300px;
+    width: 50%;
 }
 
 input {
     border-radius: 5px;
     height: 30px;
     margin: 0 10px;
-    width: 280px;
+    width: 40%;
 }
 
 
 
 /* classes */
 
-.c-button-disabled {
+.bottom {
+    text-align: center;
+}
+
+.choose-word {
+    background-color: #27ae60;
+    border: none;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 6px 9px 0px;
+    color: #ffffff;
+    height: 45px;
+    margin-top: 10%;
+    max-width: 95%;
+    padding: 0 10px;
+}
+
+.disabled {
     background-color: #9faab5;
     border: none;
     color: #61676f;
 }
 
-.c-button-enabled {
+.enabled {
     background-color: #e1ecf4;
     border: 1px solid #39739d;
     color: #39739d;
 }
 
-.chooseWord {
-    background-color: #27ae60;
-    border: none;
-    border-radius: 10px;
-    color: #ffffff;
-    height: 45px;
-    margin: 20px 0;
-    width: 160px;
+.enabled:hover {
+    background-color: #b3d3ea
 }
 
-.container {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-}
-
-.guess {
-    font-family:'Segoe UI', sans-serif;
-    margin: 30px auto;
-    width: 510px;
-}
-
-.guess button {
+.guess-button {
     background-color: #e1ecf4;
     border: 1px solid #39739d;
     border-radius: 5px;
     color: #39739d;
     font-size: 14px;
     height: 40px;
+    margin: 5px 0;
     width: 70px;
+}
+
+.letter {
+    border-radius: 2px;
+    height: 40px;
+    margin: 4px;
+    width: 40px;
 }
 
 .letters {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 15px auto;
-    width: 615px;
-}
-
-.letters button {
-    border-radius: 2px;
-    height: 40px;
-    margin: 3px;
-    width: 40px;
+    margin: 20px auto;
+    max-width: 634px;
+    padding: 0 5px;
 }
 
 .lost {
     color: #ff0000;
 }
 
+.root {
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
 .won {
     color: #27ae60;
 }
 
-.word-box {
+.word {
+    align-items: flex-end;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    text-align: right;
+    width: 50%;
 }

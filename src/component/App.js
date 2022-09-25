@@ -91,7 +91,6 @@ export default function App() {
 
     function finishGame() {
         setEnabledLetters([]);
-        setGuess("");
         setInputDisabled(true);
     }
 
@@ -102,84 +101,85 @@ export default function App() {
 
     return (
         <>
-            <div className="container">
-                <img src={hang} alt={`Forca no estado ${mistakes}`} data-identifier="game-image" />
+            <div className="top">
+                <img
+                    alt={`Forca no estado ${mistakes}`}
+                    data-identifier="game-image"
+                    src={hang}
+                />
 
-                <div className="word-box">
-                    <div>
-                        <button
-                            className="chooseWord"
-                            onClick={chooseWord}
-                            data-identifier="choose-word"
-                        >
-                            Escolher Palavra
-                        </button>
-                    </div>
+                <div className="word">
+                    <button
+                        className="choose-word"
+                        data-identifier="choose-word"
+                        onClick={chooseWord}
+                    >
+                        Escolher Palavra
+                    </button>
 
-                    <div>
-                        <h1
-                            className={
-                                (remainingHits === 0) ? "won" : ((mistakes === 6) ? "lost" : "")
-                            }
-                            data-identifier="word"
-                        >
-                            {(mistakes === 6) ? word : maskedWord}
-                        </h1>
-                    </div>
+                    <h1
+                        className={(remainingHits === 0) ? "won" : ((mistakes === 6) ? "lost" : "")}
+                        data-identifier="word"
+                    >
+                        {(mistakes === 6) ? word : maskedWord}
+                    </h1>
                 </div>
             </div>
 
-            <div className="letters">
-                {alfabet.map((letter) =>
+            <div className="bottom">
+                <div className="letters">
+                    {alfabet.map((letter) =>
+                        <button
+                            className={`letter ${enabledLetters.includes(letter) ? "enabled" : "disabled"}`}
+                            data-identifier="letter"
+                            key={letter}
+                            onClick={() => chooseLetter(letter)}
+                        >
+                            {letter.toUpperCase()}
+                        </button>
+                    )}
+                </div>
+
+                <div>
+                    Já sei a palavra!
+
+                    <input
+                        data-identifier="type-guess"
+                        disabled={inputDisabled}
+                        onChange={e => setGuess(e.target.value)}
+                        value={guess}
+                    />
+
                     <button
-                        className={`c-button-${enabledLetters.includes(letter) ? "enabled" : "disabled"}`}
-                        onClick={() => chooseLetter(letter)}
-                        data-identifier="letter"
-                        key={letter}
-                    >
-                        {letter.toUpperCase()}
-                    </button>
-                )}
-            </div>
-
-            <div className="guess">
-                Já sei a palavra!
-
-                <input
-                    disabled={inputDisabled}
-                    value={guess}
-                    onChange={
-                        e => setGuess(e.target.value)
-                    }
-                    data-identifier="type-guess"
-                />
-
-                <button
-                    onClick={
-                        () => {
-                            if (mistakes < 6 && remainingHits > 0) {
-                                if (guess.trim().length === 0) {
-                                    alert("Tente uma palavra válida!");
-                                } else {
-                                    const normalizedGuess = normalizeWord(guess.toLowerCase());
-
-                                    if ((JSON.stringify(normalizedGuess) === JSON.stringify(normalizedWord))) {
-                                        setMaskedWord(word);
-                                        setRemainingHits(0);
+                        className="guess-button"
+                        data-identifier="guess-button"
+                        onClick={
+                            () => {
+                                if (mistakes < 6 && remainingHits > 0) {
+                                    if (!guess) {
+                                        alert("Digite uma palavra!");
+                                    } else if (guess.match(/[^A-zÀ-ú]/g, '')) { // checking for special characteres, numbers and spaces
+                                        alert("Digite apenas letras!");
                                     } else {
-                                        setHang(hangs[6]);
-                                        setMistakes(6);
-                                    }
+                                        const normalizedGuess = normalizeWord(guess.toLowerCase());
 
-                                    finishGame();
+                                        if ((JSON.stringify(normalizedGuess) === JSON.stringify(normalizedWord))) {
+                                            setMaskedWord(word);
+                                            setRemainingHits(0);
+                                        } else {
+                                            setHang(hangs[6]);
+                                            setMistakes(6);
+                                        }
+
+                                        finishGame();
+                                    }
                                 }
                             }
                         }
-                    }
-                    data-identifier="guess-button"
-                >
-                    Chutar
-                </button>
+                    >
+                        Chutar
+                    </button>
+                </div>
             </div>
         </>
     );
