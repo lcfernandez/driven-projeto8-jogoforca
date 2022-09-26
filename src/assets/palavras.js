@@ -24,4 +24,4 @@ const palavras = [
     "zebra", "zagueiro", "zero", "zoeira", "zodíaco", "zangão", "zepelim", "zinco", "zoológico", "zumbido"
 ];
 
-export default palavras
+export default palavras;

@@ -60,7 +60,7 @@ export default function App() {
 
             } else {
                 
-                // increasing the quantity of mistakes and updating the image
+                // increasing the number of mistakes and updating the image
                 const mistakesUpdate = mistakes + 1;
                 setHang(hangs[mistakesUpdate]);
                 setMistakes(mistakesUpdate);
