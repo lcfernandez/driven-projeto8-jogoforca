@@ -1,12 +1,14 @@
 import { useState } from "react";
-import hang0 from "../assets/images/forca0.png";
-import hang1 from "../assets/images/forca1.png";
-import hang2 from "../assets/images/forca2.png";
-import hang3 from "../assets/images/forca3.png";
-import hang4 from "../assets/images/forca4.png";
-import hang5 from "../assets/images/forca5.png";
-import hang6 from "../assets/images/forca6.png";
-import words from "../assets/palavras.js";
+import GlobalStyle from "./GlobalStyle"
+import hang0 from "./assets/images/forca0.png";
+import hang1 from "./assets/images/forca1.png";
+import hang2 from "./assets/images/forca2.png";
+import hang3 from "./assets/images/forca3.png";
+import hang4 from "./assets/images/forca4.png";
+import hang5 from "./assets/images/forca5.png";
+import hang6 from "./assets/images/forca6.png";
+import styled from "styled-components";
+import words from "./assets/palavras.js";
 
 export default function App() {
     const alfabet = [
@@ -100,58 +102,57 @@ export default function App() {
     }
 
     return (
-        <>
-            <div className="top">
-                <img
+        <Content>
+            <Top>
+                <Hang
                     alt={`Forca no estado ${mistakes}`}
                     data-identifier="game-image"
                     src={hang}
                 />
 
-                <div className="word">
-                    <button
-                        className="choose-word"
+                <WordContainer>
+                    <ChooseWord
                         data-identifier="choose-word"
                         onClick={chooseWord}
                     >
                         Escolher Palavra
-                    </button>
+                    </ChooseWord>
 
-                    <h1
-                        className={(remainingHits === 0) ? "won" : ((mistakes === 6) ? "lost" : "")}
+                    <Word
                         data-identifier="word"
+                        remainingHits={remainingHits}
+                        mistakes={mistakes}
                     >
                         {(mistakes === 6) ? word : maskedWord}
-                    </h1>
-                </div>
-            </div>
+                    </Word>
+                </WordContainer>
+            </Top>
 
-            <div className="bottom">
-                <div className="letters">
+            <Bottom>
+                <Letters>
                     {alfabet.map((letter) =>
-                        <button
-                            className={`letter ${enabledLetters.includes(letter) ? "enabled" : "disabled"}`}
+                        <Letter
                             data-identifier="letter"
+                            enabled={enabledLetters.includes(letter) ? true : false}
                             key={letter}
                             onClick={() => chooseLetter(letter)}
                         >
                             {letter.toUpperCase()}
-                        </button>
+                        </Letter>
                     )}
-                </div>
+                </Letters>
 
                 <div>
                     Já sei a palavra!
 
-                    <input
+                    <TypeGuess
                         data-identifier="type-guess"
                         disabled={inputDisabled}
                         onChange={e => setGuess(e.target.value)}
                         value={guess}
                     />
 
-                    <button
-                        className="guess-button"
+                    <GuessButton
                         data-identifier="guess-button"
                         onClick={
                             () => {
@@ -178,9 +179,111 @@ export default function App() {
                         }
                     >
                         Chutar
-                    </button>
+                    </GuessButton>
                 </div>
-            </div>
-        </>
+            </Bottom>
+
+            <GlobalStyle />
+        </Content>
     );
 }
+
+const Bottom = styled.div`
+    text-align: center;
+`;
+
+const ChooseWord = styled.button`
+    background-color: #27ae60;
+    border: none;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 6px 9px 0px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    height: 45px;
+    margin-top: 5%;
+    max-width: 95%;
+    padding: 0 10px;
+`;
+
+const Content = styled.div`
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0 auto;
+    max-width: 800px;
+`;
+
+const GuessButton = styled.button`
+    background-color: #e1ecf4;
+    border: 1px solid #39739d;
+    border-radius: 5px;
+    color: #39739d;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    height: 40px;
+    margin: 5px 0;
+    width: 70px;
+`;
+
+const Hang = styled.img`
+    width: 45%;
+`;
+
+const Letter = styled.button`
+    align-items: center;
+    background-color: ${props => props.enabled ? "#e1ecf4" : "#9faab5"};
+    border: ${props => props.enabled ? "1px solid #39739d" : "none"};
+    border-radius: 2px;
+    box-sizing: border-box;
+    color: ${props => props.enabled ? "#39739d" : "#61676f"};
+    cursor: pointer;
+    display: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    height: 40px;
+    justify-content: inherit;
+    margin: 4px;
+    width: 40px;
+    ${props => props.enabled ? "&:hover {background-color: #b3d3ea}" : ""}
+`;
+
+const Letters = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px auto;
+    max-width: 624px;
+    padding: 0 5px;
+`;
+
+const Top = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+`;
+
+const TypeGuess = styled.input`
+    border-radius: 5px;
+    height: 30px;
+    margin: 0 10px;
+    width: 40%;
+`;
+
+const Word = styled.h1`
+    color: ${props => (props.remainingHits === 0) ? "#27ae60" : ((props.mistakes === 6) ? "#ff0000" : "#000000")};
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 10px;
+    max-width: 95%;
+    text-align: right;
+    word-wrap: break-word;
+`;
+
+const WordContainer = styled.div`
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 55%;
+`;
